@@ -7,11 +7,11 @@ product_list = [
         'safety_stock': 20,
         'total_stock': 3750000,
         'status': 'Cảnh báo'
-     }
-    ]
+    }
+]
 
 def show_list(list):
-    print("                                                                  ---- DANH SÁCH HÀNG HÓA -----")
+    print("                                                                                 ---- DANH SÁCH HÀNG HÓA -----")
     print()
     header = f"{'Mã sản phẩm':<20} | {'Tên sản phẩm':<40} | {'Đơn giá vốn':<20} | {'Số lượng tồn':<20} | {'Định mức tối thiểu':<20} | {'Tổng giá trị tồn kho':<20} | {'Trạng thái tồn kho':<20}"
     print(header)
@@ -98,6 +98,9 @@ def delete_product(list):
         if delete_id == item['id']:
             list.remove(item)
             print("Đã xóa sản phẩm thành công")
+            break
+    else:
+        print("Mã sản phẩm không tồn tại")
 
 def search_product(list):
     search_id = input("Nhập mã sản phẩm cần tìm: ")
@@ -105,36 +108,62 @@ def search_product(list):
         if search_id == item['id']:
             show_list(list)
 
-while True:
-    print("---- MENU QUẢN LÝ KHO HÀNG ----")
-    print("="*40)
-    print("1. Hiển thị danh sách kho hàng")
-    print("2. Khai báo sản phẩm mới")
-    print("3. Cập nhật số lượng và giá vốn")
-    print("4. Xóa sản phẩm khỏi danh mục")
-    print("5. Tìm kiếm sản phẩm")
-    print("6. Thống kê trạng thái kho hàng")
-    print("7. Phân loại trạng thái tự động")
-    print("8. Thoát chương trình")
-    print("="*40)
-    choice = input("Nhập lựa chọn của bạn: ")
+def statistic_product(list):
+    count_overload = 0
+    count_safety = 0
+    count_warning = 0
+    count_soldout = 0
 
-    match choice:
-        case '1':
-            show_list(product_list)
-        case '2':
-            add_product(product_list)
-        case '3':
-            update_product(product_list)
-        case '4':
-            delete_product(product_list)
-        case '5':
-            search_product(product_list)
-        case '8':
-            print("Cảm ơn bạn đã sử dụng chương trình")
-            break
-        case _:
-            break
+    for item in list:
+        if item['status'] == 'Quá tải':
+            count_overload += 1
+        elif item['status'] == 'An toàn':
+            count_safety += 1
+        elif item['status'] == 'Cảnh báo':
+            count_warning += 1
+        else:
+            count_soldout += 1
+    
+    print(f"Số lượng mặt hàng (Hết hàng): {count_soldout}")
+    print(f"Số lượng mặt hàng (Cảnh báo): {count_warning}")
+    print(f"Số lượng mặt hàng (An toàn): {count_safety}")
+    print(f"Số lượng mặt hàng (Quá tải): {count_overload}")
+
+def main():
+    while True:
+        print("---- MENU QUẢN LÝ KHO HÀNG ----")
+        print("="*40)
+        print("1. Hiển thị danh sách kho hàng")
+        print("2. Khai báo sản phẩm mới")
+        print("3. Cập nhật số lượng và giá vốn")
+        print("4. Xóa sản phẩm khỏi danh mục")
+        print("5. Tìm kiếm sản phẩm")
+        print("6. Thống kê trạng thái kho hàng")
+        print("7. Phân loại trạng thái tự động")
+        print("8. Thoát chương trình")
+        print("="*40)
+        choice = input("Nhập lựa chọn của bạn: ")
+
+        match choice:
+            case '1':
+                show_list(product_list)
+            case '2':
+                add_product(product_list)
+            case '3':
+                update_product(product_list)
+            case '4':
+                delete_product(product_list)
+            case '5':
+                search_product(product_list)
+            case '6':
+                statistic_product(product_list)
+            case '8':
+                print("Cảm ơn bạn đã sử dụng chương trình")
+                break
+            case _:
+                break
+
+main()
             
 
 
