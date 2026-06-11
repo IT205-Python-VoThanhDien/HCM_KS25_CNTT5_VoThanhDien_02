@@ -157,6 +157,8 @@ def main():
                 search_product(product_list)
             case '6':
                 statistic_product(product_list)
+            case '7':
+                break
             case '8':
                 print("Cảm ơn bạn đã sử dụng chương trình")
                 break
